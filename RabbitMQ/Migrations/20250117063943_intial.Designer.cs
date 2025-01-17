@@ -11,8 +11,8 @@ using RabbitMQ.Models;
 namespace RabbitMQ.Migrations
 {
     [DbContext(typeof(RabbitMQContext))]
-    [Migration("20250115132140_mo")]
-    partial class mo
+    [Migration("20250117063943_intial")]
+    partial class intial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

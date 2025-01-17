@@ -5,7 +5,7 @@
 namespace RabbitMQ.Migrations
 {
     /// <inheritdoc />
-    public partial class mo : Migration
+    public partial class intial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

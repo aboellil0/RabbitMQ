@@ -20,20 +20,39 @@ namespace RabbitMQ.Controllers
             this._context = context;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateBoocking(Booking newBooking)
+        [HttpPost("/CreateBoocking")]
+        public async Task<IActionResult> CreateBoocking([FromBody] Booking newBooking)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var BookDbItem = await _context.Bookings.AddAsync(new Booking
+            {
+                PassengerName = newBooking.PassengerName,
+                PassportNb = newBooking.PassportNb,
+                RFrom = newBooking.RFrom,
+                RTo = newBooking.RTo,
+                Status = newBooking.Status,
+            });
+            await _context.SaveChangesAsync();
+            await _messageProduser.SendingMessages(newBooking);
+
+            return Ok(new { id = BookDbItem.Entity.id });
+        }
+
+        [HttpPost("/BookDb")]
+        public IActionResult BookDb([FromBody] Booking newBooking)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             
-            await _context.Bookings.AddAsync(newBooking);
-            await _messageProduser.SendingMessages(newBooking);
+            _context.Bookings.Add(newBooking);
 
-
-            return Ok();
+            return Ok(newBooking);
         }
-
     }
 }
